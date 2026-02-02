@@ -6,12 +6,15 @@ const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const userRoutes = require("./routes/userRoutes");
+const { swaggerUi, specs } = require('./swagger');
+
 
 
 
 // 1️⃣ Configuration
 dotenv.config();
 const app = express();
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // 2️⃣ Middleware & CORS
 // We include both localhost and 127.0.0.1 to prevent browser mismatches
@@ -24,6 +27,8 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+
 
 // 3️⃣ MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
@@ -59,7 +64,8 @@ app.use((req, res) => {
 });
 
 // 7️⃣ Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
+console.log("Swagger paths detected:", Object.keys(specs.paths));
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });

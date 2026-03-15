@@ -60,8 +60,8 @@ exports.initiateEsewa = async (req, res) => {
                 product_code,
                 signature,
                 signed_field_names: "total_amount,transaction_uuid,product_code",
-                success_url: "http://localhost:5173/payment-success",
-                failure_url: `http://localhost:5173/cart?status=cancel&oid=${savedOrder._id}`,
+                success_url: "https://e-commerce-project-eta-dun.vercel.app/payment-success",
+                failure_url: `https://e-commerce-project-eta-dun.vercel.app/cart?status=cancel&oid=${savedOrder._id}`,
                 product_service_charge: "0",
                 product_delivery_charge: "0",
             }

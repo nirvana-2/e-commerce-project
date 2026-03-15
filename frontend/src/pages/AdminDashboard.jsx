@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // ✅ Added for navigation fix
+import { useNavigate } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import StatsCards from './StatsCards';
 import OrdersTable from './OrdersTable';
 import ImageUpload from '../components/ImageUpload';
+import { API_BASE } from '../api/config';
 
 const AdminDashboard = () => {
-  const navigate = useNavigate(); // ✅ Initialized navigate hook
+  const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -25,13 +26,11 @@ const AdminDashboard = () => {
     category: '', subCategory: '', image: ''
   });
 
-  // ✅ FIXED: Security Check to prevent back-arrow history loops
   useEffect(() => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     if (!token || user.role !== 'admin') {
-      // replace: true removes the admin path from history so 'Back' works correctly
       navigate('/login', { replace: true });
     }
   }, [navigate]);
@@ -52,18 +51,15 @@ const AdminDashboard = () => {
       setLoading(true);
       const headers = { Authorization: `Bearer ${token}` };
       const [productRes, orderRes, statsRes] = await Promise.all([
-        axios.get(`http://localhost:3000/api/products?page=${page}`, { headers }),
-        axios.get("http://localhost:3000/api/admin/orders", { headers }),
-        axios.get("http://localhost:3000/api/admin/stats", { headers })
+        axios.get(`${API_BASE}/api/products?page=${page}`, { headers }),
+        axios.get(`${API_BASE}/api/admin/orders`, { headers }),
+        axios.get(`${API_BASE}/api/admin/stats`, { headers })
       ]);
 
       setProducts(productRes.data.products || []);
       setTotalPages(productRes.data.totalPages || 1);
       setOrders(orderRes.data || []);
-
-      // ✅ Log this to your console to see exactly what the backend is sending
       console.log("Stats from Backend:", statsRes.data);
-
       setStats(statsRes.data || null);
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -76,12 +72,11 @@ const AdminDashboard = () => {
     fetchData();
   }, [fetchData]);
 
-  // handleStatusUpdate, handleUpdateProduct, and handleSubmit remain as you wrote them...
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `http://localhost:3000/api/orders/admin/status/${orderId}`,
+        `${API_BASE}/api/orders/admin/status/${orderId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -92,7 +87,7 @@ const AdminDashboard = () => {
             order._id === orderId ? { ...order, status: newStatus } : order
           )
         );
-        const statsRes = await axios.get("http://localhost:3000/api/admin/stats", {
+        const statsRes = await axios.get(`${API_BASE}/api/admin/stats`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setStats(statsRes.data);
@@ -105,7 +100,7 @@ const AdminDashboard = () => {
   const handleUpdateProduct = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.put(`http://localhost:3000/api/products/${id}`, editData, {
+      const res = await axios.put(`${API_BASE}/api/products/${id}`, editData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.data.success) {
@@ -121,7 +116,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.post("http://localhost:3000/api/products", formData, {
+      await axios.post(`${API_BASE}/api/products`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("Product Created!");

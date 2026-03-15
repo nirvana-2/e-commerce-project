@@ -1,4 +1,4 @@
-const Order = require("../models/Order");
+const Order = require("../models/order");
 const Cart = require("../models/cart");
 const Product = require("../models/product");
 const User = require("../models/users"); // Added for Rewards Logic
@@ -8,15 +8,15 @@ const jwt = require('jsonwebtoken');
 // 1. Place a new order
 const placeOrder = async (req, res) => {
   try {
-    const { 
-      userId, 
-      items, 
-      fullName, 
-      phoneNumber, 
-      address, 
-      shippingPrice, 
-      paymentMethod, 
-      usePoints 
+    const {
+      userId,
+      items,
+      fullName,
+      phoneNumber,
+      address,
+      shippingPrice,
+      paymentMethod,
+      usePoints
     } = req.body;
 
     // Validation
@@ -38,17 +38,17 @@ const placeOrder = async (req, res) => {
     // ✅ STYLE PERKS LOGIC: 10 point minimum (1 Point = 10 Rs Discount)
     if (usePoints) {
       if (user.rewards.points >= 10) {
-        discount = user.rewards.points * 10; 
-        
+        discount = user.rewards.points * 10;
+
         // Safety: Discount can't exceed the subtotal
         if (discount > subTotal) {
           discount = subTotal;
         }
         pointsToDeduct = discount / 10;
       } else {
-        return res.status(400).json({ 
-          success: false, 
-          message: `Minimum 10 points required to redeem. You have ${user.rewards.points}.` 
+        return res.status(400).json({
+          success: false,
+          message: `Minimum 10 points required to redeem. You have ${user.rewards.points}.`
         });
       }
     }
@@ -84,8 +84,8 @@ const placeOrder = async (req, res) => {
     // ✅ DEDUCT POINTS: From user wallet immediately if used
     if (pointsToDeduct > 0) {
       // Use $inc with a negative value to be safer than direct assignment
-      await User.findByIdAndUpdate(userId, { 
-        $inc: { "rewards.points": -pointsToDeduct } 
+      await User.findByIdAndUpdate(userId, {
+        $inc: { "rewards.points": -pointsToDeduct }
       });
     }
 
@@ -120,7 +120,7 @@ const placeOrder = async (req, res) => {
 const getUserOrders = async (req, res) => {
   try {
     const userId = req.user.id;
-    
+
     // Cleanup: Remove stale unpaid eSewa orders (older than 5 mins)
     const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
     await Order.deleteMany({
@@ -146,7 +146,7 @@ const getUserOrders = async (req, res) => {
 // 3. Update Order Status (Admin)
 const updateOrderStatus = async (req, res) => {
   try {
-    const { status } = req.body; 
+    const { status } = req.body;
     const order = await Order.findById(req.params.id);
 
     if (!order) {
@@ -174,10 +174,10 @@ const updateOrderStatus = async (req, res) => {
     // Update Status and Timestamps
     order.status = status;
     if (status === "shipped") order.statusTimeline.shippedAt = Date.now();
-    
+
     if (status === "delivered") {
       order.statusTimeline.deliveredAt = Date.now();
-      
+
       // ✅ STYLE PERKS: Officially award points to User on delivery
       if (order.pointsEarned > 0) {
         await User.findByIdAndUpdate(order.user, {
@@ -209,7 +209,7 @@ const checkReviewEligibility = async (req, res) => {
       user: new mongoose.Types.ObjectId(userId),
       "products.product": new mongoose.Types.ObjectId(productId),
       $or: [
-        { paymentStatus: "paid" }, 
+        { paymentStatus: "paid" },
         { status: "delivered" }
       ]
     });
@@ -220,9 +220,9 @@ const checkReviewEligibility = async (req, res) => {
   }
 };
 
-module.exports = { 
-  placeOrder, 
-  getUserOrders, 
-  updateOrderStatus, 
-  checkReviewEligibility 
+module.exports = {
+  placeOrder,
+  getUserOrders,
+  updateOrderStatus,
+  checkReviewEligibility
 };

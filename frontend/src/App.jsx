@@ -12,7 +12,7 @@ import ProductDetail from './pages/productDetail';
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailure from './pages/paymentFailure';
 import UserProfile from "./pages/UserProfile";
-import ExpenseDashboard from "./pages/ExpenseDashboard";
+
 import ResetPassword from "./pages/resetPassword";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -91,7 +91,7 @@ export default function App() {
         <Route path="/product/:id" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
         <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
-        <Route path="/expenses" element={<ProtectedRoute><ExpenseDashboard /></ProtectedRoute>} />
+        
 
         {/* Public or specialized routes */}
         <Route path="/payment-failure" element={<PaymentFailure />} />

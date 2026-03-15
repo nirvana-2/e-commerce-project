@@ -19,7 +19,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // 2️⃣ Middleware & CORS
 // We include both localhost and 127.0.0.1 to prevent browser mismatches
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://nirvana-2.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -64,8 +64,9 @@ app.use((req, res) => {
 });
 
 // 7️⃣ Start server
+// 7️⃣ Start server
 const PORT = process.env.PORT || 3000;
 console.log("Swagger paths detected:", Object.keys(specs.paths));
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });

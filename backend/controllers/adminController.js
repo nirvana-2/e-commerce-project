@@ -1,5 +1,5 @@
 const User = require("../models/users");
-const Order = require("../models/Order");
+const Order = require("../models/order");
 
 exports.getDashboardStats = async (req, res) => {
     try {
@@ -28,8 +28,8 @@ exports.getDashboardStats = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find()
-            .populate("user", "name email") 
-            .populate("products.product") 
+            .populate("user", "name email")
+            .populate("products.product")
             .sort({ createdAt: -1 });
 
         res.json(orders);

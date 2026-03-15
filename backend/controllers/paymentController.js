@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const Order = require("../models/Order");
+const Order = require("../models/order");
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 const User = require("../models/users"); // ✅ Ensure User model is imported
@@ -34,7 +34,7 @@ exports.initiateEsewa = async (req, res) => {
         if (usePoints) {
             const user = await User.findById(userId);
             // Deduct ALL current points because they are being used for this discount
-            await User.findByIdAndUpdate(userId, { $set: { "rewards.points": 0 } }); 
+            await User.findByIdAndUpdate(userId, { $set: { "rewards.points": 0 } });
             newOrder.pointsUsed = user.rewards.points; // Save how many were used
         }
 
@@ -105,12 +105,12 @@ exports.verifyEsewa = async (req, res) => {
 
             // ✅ LOGIC: Calculate Rewards
             // We use the earnedPoints variable calculated above
-            await User.findByIdAndUpdate(order.user, { 
-                $inc: { "rewards.points": earnedPoints } 
+            await User.findByIdAndUpdate(order.user, {
+                $inc: { "rewards.points": earnedPoints }
             });
 
             // ✅ REPAIR: Save the points to the Order document so frontend can see it
-            order.pointsEarned = earnedPoints; 
+            order.pointsEarned = earnedPoints;
             order.paymentStatus = "paid";
             order.status = "processing";
             await order.save();
@@ -120,9 +120,9 @@ exports.verifyEsewa = async (req, res) => {
         }
 
         // ✅ REPAIR: Send earnedPoints back to frontend in the response
-        res.status(200).json({ 
-            success: true, 
-            earnedPoints: earnedPoints 
+        res.status(200).json({
+            success: true,
+            earnedPoints: earnedPoints
         });
     } catch (err) {
         console.error("Verification Error:", err.message);

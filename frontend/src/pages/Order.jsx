@@ -93,7 +93,7 @@ export default function Orders() {
       let data;
       if (user.role === 'admin') {
         // Admin still uses axios directly because we haven't created a getAdminOrders helper yet
-        const res = await axios.get("${API_BASE}/api/orders/admin/all", {
+        const res = await axios.get(`${API_BASE}/api/orders/admin/all`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         data = res.data;

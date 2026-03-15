@@ -28,7 +28,7 @@ export default function Login() {
     }
 
     try {
-      const res = await axios.post("${API_BASE}/api/users/forgot-password", {
+      const res = await axios.post(`${API_BASE}/api/users/forgot-password`, {
         email: resetEmail,
       });
       setMessage(res.data.message || "Reset link sent! Check your email.");

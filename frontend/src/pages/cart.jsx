@@ -125,7 +125,7 @@ export default function Cart({ isSidebar = false, usePoints = false, pointsValue
   const handleEsewaRedirect = async (userId) => {
     setIsOrdering(true);
     try {
-      const response = await axios.post("${API_BASE}/api/payment/initiate-esewa", {
+      const response = await axios.post(`${API_BASE}/api/payment/initiate-esewa`, {
         userId, items: cart.map(item => ({ product: item.product._id, quantity: item.quantity, price: item.product.price })),
         subTotal, totalAmount: finalTotalPrice, address, fullName, phoneNumber, usePoints: finalUsePoints
       });

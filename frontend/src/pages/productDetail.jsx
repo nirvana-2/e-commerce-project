@@ -46,7 +46,7 @@ const ProductDetail = () => {
         return;
       }
       await axios.post(
-        "${API_BASE}/api/cart/add",
+        `${API_BASE}/api/cart/add`,
         { productId: id, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );

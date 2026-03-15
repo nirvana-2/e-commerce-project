@@ -12,7 +12,7 @@ export default function AdminCart() {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        const response = await axios.get("${API_BASE}/api/cart/all", {
+        const response = await axios.get(`${API_BASE}/api/cart/all`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

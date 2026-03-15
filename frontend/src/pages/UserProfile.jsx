@@ -22,8 +22,8 @@ const UserProfile = () => {
                 const config = { headers: { Authorization: `Bearer ${token}` } };
 
                 const [userRes, ordersRes] = await Promise.all([
-                    axios.get("${API_BASE}/api/users/profile", config),
-                    axios.get("${API_BASE}/api/orders/my-orders", config)
+                    axios.get(`${API_BASE}/api/users/profile`, config),
+                    axios.get(`${API_BASE}/api/orders/my-orders`, config)
                 ]);
 
                 // ✅ FIXED: Ensure we capture the user object correctly from the response

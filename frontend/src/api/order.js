@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // Ensure this matches your backend URL
-const API_URL = "http://localhost:3000/api/orders";
+import { API_BASE } from "./config";
+const API_URL = `${API_BASE}/api/orders`;
 
 /**
  * Place a new order

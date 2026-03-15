@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api";
+import { API_BASE } from "./config";
+const API_URL = `${API_BASE}/api/auth`;
 
 // Create an instance so you don't have to repeat config
 const api = axios.create({
@@ -13,11 +14,11 @@ const api = axios.create({
 
 // Register user
 export const registerUser = async (userName, email, password, role) => {
-  const response = await api.post("/auth/register", { 
-    name: userName, 
-    email, 
-    password, 
-    role 
+  const response = await api.post("/auth/register", {
+    name: userName,
+    email,
+    password,
+    role
   });
   return response.data;
 };

@@ -19,7 +19,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // 2️⃣ Middleware & CORS
 // We include both localhost and 127.0.0.1 to prevent browser mismatches
 app.use(cors({
-    origin: ["http://localhost:5173", "https://e-commerce-project-eta-dun.vercel.app"],
+    origin: [
+        "http://localhost:5173",
+        "https://e-commerce-project-eta-dun.vercel.app",
+        "https://e-commerce-project-6fw2kfnuo-saman-shakyas-projects-f0a62889.vercel.app",
+        /\.vercel\.app$/
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,

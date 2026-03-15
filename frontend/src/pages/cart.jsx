@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useState, useEffect, useCallback } from "react";
 import { getCart, removeFromCart } from "../api/cart";
 import { placeOrder } from "../api/order";
@@ -47,7 +48,7 @@ export default function Cart({ isSidebar = false, usePoints = false, pointsValue
     const orderId = params.get("oid");
 
     if (status === "cancel" && orderId) {
-      axios.delete(`http://localhost:3000/api/payment/cancel-order/${orderId}`)
+      axios.delete(`${API_BASE}/api/payment/cancel-order/${orderId}`)
         .then(() => {
           alert("Payment cancelled. Your items are still in the cart.");
           navigate("/cart", { replace: true });
@@ -124,7 +125,7 @@ export default function Cart({ isSidebar = false, usePoints = false, pointsValue
   const handleEsewaRedirect = async (userId) => {
     setIsOrdering(true);
     try {
-      const response = await axios.post("http://localhost:3000/api/payment/initiate-esewa", {
+      const response = await axios.post("${API_BASE}/api/payment/initiate-esewa", {
         userId, items: cart.map(item => ({ product: item.product._id, quantity: item.quantity, price: item.product.price })),
         subTotal, totalAmount: finalTotalPrice, address, fullName, phoneNumber, usePoints: finalUsePoints
       });

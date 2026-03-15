@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -18,13 +19,13 @@ const ProductDetail = () => {
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         // 1. Fetch product details
-        const res = await axios.get(`http://localhost:3000/api/products/${id}`);
+        const res = await axios.get(`${API_BASE}/api/products/${id}`);
         setProduct(res.data);
 
         // 2. Check if user can review
         if (token) {
           const eligibilityRes = await axios.get(
-            `http://localhost:3000/api/orders/check-review-eligibility/${id}`,
+            `${API_BASE}/api/orders/check-review-eligibility/${id}`,
             { headers }
           );
           setIsEligible(eligibilityRes.data.eligible);
@@ -45,7 +46,7 @@ const ProductDetail = () => {
         return;
       }
       await axios.post(
-        "http://localhost:3000/api/cart/add",
+        "${API_BASE}/api/cart/add",
         { productId: id, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -59,7 +60,7 @@ const ProductDetail = () => {
   // Function to refresh data passed to ReviewForm
   const refreshData = () => {
     // This manually triggers a refresh without causing a loop
-    axios.get(`http://localhost:3000/api/products/${id}`).then(res => setProduct(res.data));
+    axios.get(`${API_BASE}/api/products/${id}`).then(res => setProduct(res.data));
   };
 
   if (!product) return <div className="h-screen flex items-center justify-center font-bold text-slate-400">Loading Product...</div>;

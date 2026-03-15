@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -34,7 +35,7 @@ export default function ResetPassword() {
 
     setIsSubmitting(true);
     try {
-      await axios.put(`http://localhost:3000/api/users/reset-password/${token}`, {
+      await axios.put(`${API_BASE}/api/users/reset-password/${token}`, {
         password: password,
       });
 

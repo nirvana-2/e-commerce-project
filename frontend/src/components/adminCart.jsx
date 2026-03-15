@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -11,7 +12,7 @@ export default function AdminCart() {
       try {
         setLoading(true);
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:3000/api/cart/all", {
+        const response = await axios.get("${API_BASE}/api/cart/all", {
           headers: { Authorization: `Bearer ${token}` }
         });
 

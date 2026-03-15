@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -19,7 +20,7 @@ const PaymentSuccess = () => {
 
       try {
         // 1. Call Backend to verify eSewa
-        const res = await axios.get(`http://localhost:3000/api/payment/verify-esewa?data=${data}`);
+        const res = await axios.get(`${API_BASE}/api/payment/verify-esewa?data=${data}`);
 
         if (res.data.success) {
           setStatus("success");

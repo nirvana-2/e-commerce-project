@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -20,7 +21,7 @@ const ReviewForm = ({ productId, onReviewPosted }) => {
             
             // This hits your review submission endpoint
             const res = await axios.post(
-                `http://localhost:3000/api/products/${productId}/reviews`,
+                `${API_BASE}/api/products/${productId}/reviews`,
                 { rating, comment },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

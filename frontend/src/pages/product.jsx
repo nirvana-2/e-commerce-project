@@ -1,3 +1,4 @@
+import { API_BASE } from "../api/config";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +39,7 @@ export default function Products({ items, currentPage, setCurrentPage, totalPage
                 return;
             }
             await axios.post(
-                "http://localhost:3000/api/cart/add",
+                "${API_BASE}/api/cart/add",
                 { productId, quantity: 1 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

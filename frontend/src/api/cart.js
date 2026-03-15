@@ -3,7 +3,7 @@ import axios from "axios";
 import { API_BASE } from "./config";
 const API_URL = `${API_BASE}/api/cart`;
 
-// GET: Fetches the user's cart (Hits http://localhost:3000/api/cart/)
+// GET: Fetches the user's cart (Hits ${API_BASE}/api/cart/)
 export const getCart = async () => {
   const token = localStorage.getItem("token");
   const res = await axios.get(API_URL, {
@@ -12,7 +12,7 @@ export const getCart = async () => {
   return res.data;
 };
 
-// POST: Adds an item (Hits http://localhost:3000/api/cart/add)
+// POST: Adds an item (Hits ${API_BASE}/api/cart/add)
 export const addToCart = async (productId, quantity = 1) => {
   const token = localStorage.getItem("token");
   // Added '/add' to match backend router.post('/add', ...)
@@ -22,7 +22,7 @@ export const addToCart = async (productId, quantity = 1) => {
   return res.data;
 };
 
-// POST: Removes an item (Hits http://localhost:3000/api/cart/remove)
+// POST: Removes an item (Hits ${API_BASE}/api/cart/remove)
 export const removeFromCart = async (productId) => {
   const token = localStorage.getItem("token");
   // Changed to POST and added '/remove' to match backend router.post('/remove', ...)

@@ -3,6 +3,7 @@ import axios from "axios";
 import Products from "./product";
 import Cart from "../pages/cart";
 import { useNavigate } from 'react-router-dom';
+import { API_BASE } from '../api/config';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export default function Dashboard() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const res = await axios.get("http://localhost:3000/api/users/profile", {
+        const res = await axios.get(`${API_BASE}/api/users/profile`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -89,7 +90,7 @@ export default function Dashboard() {
       if (!isSilent) setLoading(true);
       setError(null);
 
-      let url = `http://localhost:3000/api/products?page=${currentPage}&limit=8&search=${debouncedSearch}&sort=${sortOrder}`;
+      let url = `${API_BASE}/api/products?page=${currentPage}&limit=8&search=${debouncedSearch}&sort=${sortOrder}`;
       if (activeCategory !== "all") url += `&category=${activeCategory}`;
       if (activeSubCategory !== "all") url += `&subCategory=${activeSubCategory}`;
 
@@ -136,11 +137,8 @@ export default function Dashboard() {
           <div className="flex-1 min-w-0">
             {/* Hero Section */}
             <div className="relative mb-6 rounded-[2rem] overflow-hidden bg-emerald-950 shadow-xl isolate">
-              {/* Background with noise and gradient overlay */}
               <div className="absolute inset-0 opacity-40 mix-blend-overlay z-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-green-900 to-teal-900 opacity-90 z-[-1]"></div>
-
-              {/* Animated Glow Effects */}
               <div className="absolute -top-24 -left-24 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
               <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
 
@@ -157,7 +155,6 @@ export default function Dashboard() {
                   <p className="text-emerald-100/80 text-[10px] mb-2 leading-relaxed max-w-xs font-light">
                     Experience performance & style. Elevate your everyday.
                   </p>
-
                   <div className="flex flex-wrap gap-2">
                     <button className="px-3 py-1.5 bg-white text-emerald-950 rounded-lg font-black text-[10px] hover:bg-emerald-50 transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-1">
                       Shop Now
@@ -169,7 +166,6 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                {/* Decorative Element / Image Placeholder */}
                 <div className="hidden lg:block relative group">
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl rotate-6 opacity-30 group-hover:rotate-12 transition-transform duration-500 blur-xl"></div>
                   <div className="relative bg-white/5 backdrop-blur-xl border border-white/20 p-3 rounded-2xl shadow-xl transform transition-transform duration-500 hover:scale-[1.02]">
@@ -185,7 +181,6 @@ export default function Dashboard() {
             <div className="mb-8">
               <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl p-3 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-black/20 transition-all">
                 <div className="flex flex-col gap-4">
-                  {/* Row 1: Search - Full Width */}
                   <div className="relative w-full group">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <svg className="h-4 w-4 text-slate-400 group-focus-within:text-teal-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -201,10 +196,7 @@ export default function Dashboard() {
                     />
                   </div>
 
-                  {/* Row 2: Categories & Sorting */}
                   <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
-
-                    {/* Categories */}
                     <div className="flex-1 overflow-x-auto no-scrollbar flex items-center gap-2 w-full">
                       {["all", ...Object.keys(subCategoryMap)].map((cat) => (
                         <button
@@ -222,7 +214,6 @@ export default function Dashboard() {
 
                     <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 hidden md:block"></div>
 
-                    {/* Sort */}
                     <div className="relative min-w-[140px] w-full md:w-auto">
                       <select
                         value={sortOrder}
@@ -242,7 +233,6 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                {/* Sub-Category Bar - Animated Expand */}
                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${activeCategory !== "all" ? "max-h-20 opacity-100 mt-3 pt-3 border-t border-slate-100 dark:border-slate-700" : "max-h-0 opacity-0 mt-0 pt-0 border-none"}`}>
                   <div className="flex flex-wrap gap-2">
                     <span className="text-[10px] font-black uppercase text-slate-400 self-center mr-2 tracking-wider">Refine:</span>
